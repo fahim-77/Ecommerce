@@ -1,0 +1,170 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* sign in */
+.container,
+.container2 {
+  width: 1110px;
+  height: 550px;
+  border-radius: 30px;
+  box-shadow: 0 0 20px 5px #d8c1d8;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.sign-in,
+.create-account {
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.sign-in > h1,
+.create-account > h1 {
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+}
+.sign-in > fieldset,
+.create-account > fieldset {
+  width: 70%;
+  height: 40px;
+  background-color: #eceff1;
+  border: none;
+  margin: 0.5rem;
+  padding: 0 1rem;
+  border-radius: 5px;
+}
+fieldset > input {
+  width: 100%;
+  height: 40px;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border-radius: inherit;
+}
+.sign-in > h5 {
+  color: gray;
+  font-size: 1.1rem;
+  margin: 2rem 0 1rem 0;
+}
+.login,
+.create {
+  width: 30%;
+  color: #fff;
+  background-color: #993799;
+  padding: 0.8rem 0;
+  border-radius: 5px;
+  border: none;
+}
+
+.welcome,
+.wlcome-back {
+  width: 550px;
+  color: #fff;
+  padding: 0 2rem;
+  border-radius: inherit;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+.welcome {
+  border-top-left-radius: 30%;
+  border-bottom-left-radius: 30%;
+  background-image: linear-gradient(to right, #800080, #d8c1d8);
+}
+.welcome > h1,
+.wlcome-back > h1 {
+  font-size: 2.5rem;
+}
+.welcome > p,
+.wlcome-back > p {
+  font-size: 1.5rem;
+  text-align: center;
+}
+.welcome > button,
+.wlcome-back > button {
+  color: #fff;
+  background-color: transparent;
+  border-color: #fff;
+  padding: 1rem 2rem;
+  margin-top: 1rem;
+  border-radius: 5px;
+}
+/* ********************************************************* */
+.container2 {
+  display: none;
+}
+.wlcome-back {
+  border-top-right-radius: 30%;
+  border-bottom-right-radius: 30%;
+  background-image: linear-gradient(to right, black, #800080);
+}
+.create-account > button {
+  margin-top: 1.5rem;
+}
+
+/* //////////////////////////////////////////////////////// */
+.disable {
+  background-color: #c290c2;
+}
+
+/* //////////////////////////////// */
+.navigation {
+  width: 1110px;
+  height: 50px;
+  /* box-shadow: inset 0 0 10px purple; */
+  padding: 0.5rem 2rem;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+}
+.pages {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 3rem;
+}
+.about,
+.contact,
+.home {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-decoration: none;
+  gap: 0.5rem;
+}
+.about > i,
+.contact > i,
+.home > i {
+  color: purple;
+  font-size: 1rem;
+}
+.about > span,
+.contact > span,
+.home > span {
+  color: purple;
+  background-color: #fff;
+}

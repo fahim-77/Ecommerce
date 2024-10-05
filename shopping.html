@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>shopping cart</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      body {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+      .navigation {
+        width: 700px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+      }
+      .home {
+        text-decoration: none;
+      }
+      table {
+        text-align: left;
+        width: 700px;
+      }
+      thead {
+        font-size: 1.5rem;
+      }
+      caption {
+        height: 60px;
+        font-size: 3rem;
+        font-weight: 400;
+        color: #fff;
+        background-color: purple;
+        margin-bottom: 0.5rem;
+        border-radius: 8px;
+      }
+      tfoot {
+        width: 100%;
+        height: 60px;
+        color: purple;
+        border: 2px solid purple;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="navigation">
+        <a class="home" href="./index.html">
+          <i class="fa fa-home" aria-hidden="true"></i>
+          <span>Home</span>
+        </a>
+      </nav>
+    </header>
+    <main>
+      <table>
+        <caption>
+          shopping cart
+        </caption>
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>title</th>
+            <th>price</th>
+            <th>count</th>
+            <th>total</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr style="height: 60px">
+            <td
+              class="total-price"
+              style="font-size: 1.2rem; font-weight: bold"
+            >
+              Total Price :
+            </td>
+            <td style="font-weight: bold"></td>
+          </tr>
+        </tfoot>
+      </table>
+    </main>
+    <script src="./script/scriptshopping.js"></script>
+  </body>
+</html>
