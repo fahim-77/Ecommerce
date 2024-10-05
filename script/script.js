@@ -1,87 +1,55 @@
-// window.location.assign("login/login.html");
-/////////////////////////////////////////
-const container = document.querySelector(".container");
+const itemsDown = [];
+const priceCount = [];
+const products = [];
+const divInsert = [];
+const btnTrash = [];
+const btnPlus = [];
+const btnMinus = [];
+const spanCount = [];
 
-const parseProductItems = [];
-async function fetch() {
-  try {
-    const request = await axios.get("https://fakestoreapi.com/products");
-    if (request.status === 200) {
-      request.data.map((item) => parseProductItems.push(item));
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-////////// get from storage //////////
-function loadLocalStorage() {
-  const unParsedUsers = localStorage.getItem("username");
-  if (unParsedUsers) {
-    const userName = JSON.parse(unParsedUsers);
-    alert(`Welcome ${userName} !!!`);
-    localStorage.removeItem("username");
-  } else {
-    window.location.replace("./login/login.html");
-  }
-  const unParsedCart = localStorage.getItem("cart");
-  if (unParsedCart) {
-    const parsed = JSON.parse(unParsedCart);
-    cart.items = [...parsed.items];
-    cart.totalPrice = parsed.totalPrice;
-  }
-}
-
-// const removeHandler = (index, event) => {
-//   event.target.parentElement.style.display = "none";
-//   event.target.parentElement.previousElementSibling.style.display = "block";
-//   cart.totalPrice = cart.items.reduce(
-//     (acc, cur) => acc - cur.price * cur.count - acc,
-//     0
-//   );
-//   cart.items.pop(cart.items[index]);
-//   localStorage.setItem("cart", JSON.stringify(cart));
-// };
-
-const removeHandler = (index, event) => {
+const removeHandler = (id, event) => {
+  const selectedItem = parseProductItems.find((item) => item.id === id);
+  const index = cart.items.findIndex((item) => item.id === selectedItem.id);
   event.target.parentElement.style.display = "none";
   event.target.parentElement.previousElementSibling.style.display = "block";
-  cart.items[index].count = 0;
   cart.totalPrice = cart.items.reduce(
-    (acc, cur) => acc - cur.price * cur.count,
+    (acc, cur) => Math.abs(cur.price * cur.count - acc),
     0
   );
-  spanCount[index].innerText = 1;
+  event.target.parentElement.children[2].innerText = cart.items[index].count;
   cart.items.pop(cart.items[index]);
   localStorage.setItem("cart", JSON.stringify(cart));
 };
 
-const reduceHandler = (index) => {
+const reduceHandler = (id, event) => {
+  const selectedItem = parseProductItems.find((item) => item.id === id);
+  const index = cart.items.findIndex((item) => item.id === selectedItem.id);
   cart.items[index].count -= 1;
-  cart.totalPrice = cart.items.reduce(
-    (acc, cur) => acc - cur.price * cur.count,
-    0
-  );
-  localStorage.setItem("cart", JSON.stringify(cart));
-  spanCount[index].innerText = cart.items[index].count;
-  if (cart.items[index].count === 1) {
-    btnMinus[index].style.display = "none";
-    btnTrash[index].style.display = "block";
-    spanCount[index].innerText = cart.items[index].count;
-    btnTrash[index].addEventListener("click", (event) =>
-      removeHandler(index, event)
+  if (cart.items[index].count === 0) {
+    event.target.style.display = "none";
+    event.target.parentElement.children[0].style.display = "block";
+  } else {
+    cart.totalPrice = cart.items.reduce(
+      (acc, cur) => Math.abs(cur.price * cur.count - acc),
+      0
     );
+    localStorage.setItem("cart", JSON.stringify(cart));
+    event.target.parentElement.children[2].innerText = cart.items[index].count;
   }
 };
 
-const addHandler = (index) => {
+const addHandler = (id, event) => {
+  event.target.parentElement.children[0].style.display = "none";
+  event.target.parentElement.children[1].style.display = "block";
+  const selectedItem = parseProductItems.find((item) => item.id === id);
+  const index = cart.items.findIndex((item) => item.id === selectedItem.id);
   cart.items[index].count += 1;
-  spanCount[index].innerText = cart.items[index].count;
   cart.totalPrice = cart.items.reduce(
     (acc, cur) => acc + cur.price * cur.count,
     0
   );
   localStorage.setItem("cart", JSON.stringify(cart));
+  event.target.parentElement.children[2].innerText = cart.items[index].count;
 };
 
 const insertToCart = (product) => {
@@ -105,20 +73,7 @@ const clickHandler = (id, event) => {
   const index = cart.items.findIndex((item) => item.id === selectedItem.id);
   if (index >= 0) {
     if (cart.items[index].count > 1) {
-      btnTrash[index].style.display = "none";
-      btnMinus[index].style.display = "block";
       spanCount[index].innerText = cart.items[index].count;
-      btnPlus[index].addEventListener("click", () => addHandler(index));
-      btnMinus[index].addEventListener("click", () => reduceHandler(index));
-    }
-    if (cart.items[index].count === 1) {
-      btnMinus[index].style.display = "none";
-      btnTrash[index].style.display = "block";
-      spanCount[index].innerText = cart.items[index].count;
-      btnPlus[index].addEventListener("click", () => addHandler(index));
-      btnTrash[index].addEventListener("click", (event) =>
-        removeHandler(index, event)
-      );
     }
   } else {
     insertToCart(selectedItem);
@@ -128,6 +83,7 @@ const clickHandler = (id, event) => {
 // const productItems = localStorage.getItem("productItems");
 // const parseProductItems = JSON.parse(productItems);
 const show = () => {
+  const container = document.querySelector(".container");
   const productContainer = document.createElement("div");
   productContainer.classList.add("products");
   parseProductItems.map((item) => {
@@ -135,6 +91,7 @@ const show = () => {
     const divProductItem = document.createElement("div");
     divProductItem.classList.add("product-items");
     divProductItem.dataset.category = item.category;
+    products.push(divProductItem);
     productContainer.appendChild(divProductItem);
 
     ///// image /////
@@ -145,6 +102,7 @@ const show = () => {
     ///// div item down /////
     const divItemDown = document.createElement("div");
     divItemDown.classList.add("item-down");
+    itemsDown.push(divItemDown);
     divProductItem.appendChild(divItemDown);
 
     ///// h3 /////
@@ -156,6 +114,7 @@ const show = () => {
     ///// div price and count /////
     const divPriceCount = document.createElement("div");
     divPriceCount.classList.add("price-count");
+    priceCount.push(divPriceCount);
     divItemDown.appendChild(divPriceCount);
 
     ///// span /////
@@ -173,6 +132,7 @@ const show = () => {
     ///// div insert and count /////
     const divInsertCount = document.createElement("div");
     divInsertCount.classList.add("insert-count");
+    divInsert.push(divInsertCount);
     divInsertCount.style.display = "none";
     divPriceCount.appendChild(divInsertCount);
 
@@ -186,7 +146,8 @@ const show = () => {
     trash.classList.add("fa");
     trash.classList.add("fa-trash");
     trash.setAttribute("aria-hidden", "true");
-    // trash.addEventListener("click", (event) => moveToTrash(item.id, event));
+    // btnTrash.push(trash);
+    trash.addEventListener("click", (event) => removeHandler(item.id, event));
     divInsertCount.appendChild(trash);
 
     const minus = document.createElement("i");
@@ -194,17 +155,22 @@ const show = () => {
     minus.classList.add("fa-minus");
     minus.setAttribute("aria-hidden", "true");
     minus.style.display = "none";
+    // btnMinus.push(minus);
+    minus.addEventListener("click", (event) => reduceHandler(item.id, event));
     divInsertCount.appendChild(minus);
 
-    const spanCount = document.createElement("span");
-    spanCount.classList.add("span-count");
-    spanCount.innerText = "1  ";
-    divInsertCount.appendChild(spanCount);
+    const spanCountShow = document.createElement("span");
+    spanCountShow.classList.add("span-count");
+    spanCountShow.innerText = "1  ";
+    spanCount.push(spanCountShow);
+    divInsertCount.appendChild(spanCountShow);
 
     const plus = document.createElement("i");
     plus.classList.add("fa");
     plus.classList.add("fa-plus");
     plus.setAttribute("aria-hidden", "true");
+    // btnPlus.push(plus);
+    plus.addEventListener("click", (event) => addHandler(item.id, event));
     divInsertCount.appendChild(plus);
   });
   container.appendChild(productContainer);
@@ -212,32 +178,49 @@ const show = () => {
 
 ////////// search word //////////
 const searchWord = document.querySelector("#search-word");
-const itemsDown = document.querySelectorAll(".item-down");
 
 ////////// search price //////////
-const priceCount = document.querySelectorAll(".price-count");
 const buttonSearch = document.querySelector(".search-button");
 const searchPrice = document.querySelector("#search-price");
 
 ////////// filters //////////
 const filters = document.querySelectorAll(".filters");
-const products = document.querySelectorAll(".product-items");
-
-////////// trash //////////
-const divInsert = document.querySelectorAll(".insert-count");
-const btnTrash = document.querySelectorAll(".fa-trash");
-const btnPlus = document.querySelectorAll(".fa-plus");
-const btnMinus = document.querySelectorAll(".fa-minus");
-const spanCount = document.querySelectorAll(".span-count");
 
 ////////////////////////////////////////////////////////
 const cart = { items: [], totalPrice: 0 };
 
-/////////////
-const list = document.querySelector(".list");
-const linkShop = document.querySelector(".fa");
-const buttonsAdd = document.querySelectorAll(".add");
 //////////////
+
+const parseProductItems = [];
+async function fetch() {
+  try {
+    const request = await axios.get("https://fakestoreapi.com/products");
+    if (request.status === 200) {
+      request.data.map((item) => parseProductItems.push(item));
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+////////// get from storage //////////
+function loadLocalStorage() {
+  const unParsedUsers = localStorage.getItem("username");
+  if (unParsedUsers) {
+    const userName = JSON.parse(unParsedUsers);
+    alert(`Welcome ${userName} !!!`);
+    localStorage.removeItem("username");
+  }
+  //  else {
+  //   window.location.replace("./login/login.html");
+  // }
+  const unParsedCart = localStorage.getItem("cart");
+  if (unParsedCart) {
+    const parsed = JSON.parse(unParsedCart);
+    cart.items = [...parsed.items];
+    cart.totalPrice = parsed.totalPrice;
+  }
+}
 
 ////////// search word //////////
 const searchWordHandler = (event) => {
