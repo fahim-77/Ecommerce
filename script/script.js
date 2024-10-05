@@ -2,12 +2,12 @@
 /////////////////////////////////////////
 const container = document.querySelector(".container");
 
-async function get() {
+const parseProductItems = [];
+async function fetch() {
   try {
-    const request = await fetch("https://fakestoreapi.com/products");
+    const request = await axios.get("https://fakestoreapi.com/products");
     if (request.status === 200) {
-      const data = await request.json();
-      localStorage.setItem("productItems", JSON.stringify(data));
+      request.data.map((item) => parseProductItems.push(item));
     }
   } catch (error) {
     console.log(error.message);
@@ -21,6 +21,8 @@ function loadLocalStorage() {
     const userName = JSON.parse(unParsedUsers);
     alert(`Welcome ${userName} !!!`);
     localStorage.removeItem("username");
+  } else {
+    window.location.replace("./login/login.html");
   }
   const unParsedCart = localStorage.getItem("cart");
   if (unParsedCart) {
@@ -123,89 +125,90 @@ const clickHandler = (id, event) => {
   }
 };
 
-const productItems = localStorage.getItem("productItems");
-const parseProductItems = JSON.parse(productItems);
+// const productItems = localStorage.getItem("productItems");
+// const parseProductItems = JSON.parse(productItems);
+const show = () => {
+  const productContainer = document.createElement("div");
+  productContainer.classList.add("products");
+  parseProductItems.map((item) => {
+    ///// div product item /////
+    const divProductItem = document.createElement("div");
+    divProductItem.classList.add("product-items");
+    divProductItem.dataset.category = item.category;
+    productContainer.appendChild(divProductItem);
 
-const productContainer = document.createElement("div");
-productContainer.classList.add("products");
-parseProductItems.map((item) => {
-  ///// div product item /////
-  const divProductItem = document.createElement("div");
-  divProductItem.classList.add("product-items");
-  divProductItem.dataset.category = item.category;
-  productContainer.appendChild(divProductItem);
+    ///// image /////
+    const image = document.createElement("img");
+    image.src = item.image;
+    divProductItem.appendChild(image);
 
-  ///// image /////
-  const image = document.createElement("img");
-  image.src = item.image;
-  divProductItem.appendChild(image);
+    ///// div item down /////
+    const divItemDown = document.createElement("div");
+    divItemDown.classList.add("item-down");
+    divProductItem.appendChild(divItemDown);
 
-  ///// div item down /////
-  const divItemDown = document.createElement("div");
-  divItemDown.classList.add("item-down");
-  divProductItem.appendChild(divItemDown);
+    ///// h3 /////
+    const h3 = document.createElement("h3");
+    h3.classList.add("caption");
+    h3.innerHTML = item.title;
+    divItemDown.appendChild(h3);
 
-  ///// h3 /////
-  const h3 = document.createElement("h3");
-  h3.classList.add("caption");
-  h3.innerHTML = item.title;
-  divItemDown.appendChild(h3);
+    ///// div price and count /////
+    const divPriceCount = document.createElement("div");
+    divPriceCount.classList.add("price-count");
+    divItemDown.appendChild(divPriceCount);
 
-  ///// div price and count /////
-  const divPriceCount = document.createElement("div");
-  divPriceCount.classList.add("price-count");
-  divItemDown.appendChild(divPriceCount);
+    ///// span /////
+    const spanPrice = document.createElement("span");
+    spanPrice.innerHTML = item.price;
+    divPriceCount.appendChild(spanPrice);
 
-  ///// span /////
-  const spanPrice = document.createElement("span");
-  spanPrice.innerHTML = item.price;
-  divPriceCount.appendChild(spanPrice);
+    ///// button /////
+    const button = document.createElement("button");
+    button.classList.add("add");
+    button.innerHTML = "Add to cart";
+    button.addEventListener("click", (event) => clickHandler(item.id, event));
+    divPriceCount.appendChild(button);
 
-  ///// button /////
-  const button = document.createElement("button");
-  button.classList.add("add");
-  button.innerHTML = "Add to cart";
-  button.addEventListener("click", (event) => clickHandler(item.id, event));
-  divPriceCount.appendChild(button);
+    ///// div insert and count /////
+    const divInsertCount = document.createElement("div");
+    divInsertCount.classList.add("insert-count");
+    divInsertCount.style.display = "none";
+    divPriceCount.appendChild(divInsertCount);
 
-  ///// div insert and count /////
-  const divInsertCount = document.createElement("div");
-  divInsertCount.classList.add("insert-count");
-  divInsertCount.style.display = "none";
-  divPriceCount.appendChild(divInsertCount);
+    ///// input /////
+    // const input = document.createElement("input");
+    // input.classList.add("input-count");
+    // input.type = "number";
+    // divInsertCount.appendChild(input);
+    ///// trash and minus and span and plus /////
+    const trash = document.createElement("i");
+    trash.classList.add("fa");
+    trash.classList.add("fa-trash");
+    trash.setAttribute("aria-hidden", "true");
+    // trash.addEventListener("click", (event) => moveToTrash(item.id, event));
+    divInsertCount.appendChild(trash);
 
-  ///// input /////
-  // const input = document.createElement("input");
-  // input.classList.add("input-count");
-  // input.type = "number";
-  // divInsertCount.appendChild(input);
-  ///// trash and minus and span and plus /////
-  const trash = document.createElement("i");
-  trash.classList.add("fa");
-  trash.classList.add("fa-trash");
-  trash.setAttribute("aria-hidden", "true");
-  // trash.addEventListener("click", (event) => moveToTrash(item.id, event));
-  divInsertCount.appendChild(trash);
+    const minus = document.createElement("i");
+    minus.classList.add("fa");
+    minus.classList.add("fa-minus");
+    minus.setAttribute("aria-hidden", "true");
+    minus.style.display = "none";
+    divInsertCount.appendChild(minus);
 
-  const minus = document.createElement("i");
-  minus.classList.add("fa");
-  minus.classList.add("fa-minus");
-  minus.setAttribute("aria-hidden", "true");
-  minus.style.display = "none";
-  divInsertCount.appendChild(minus);
+    const spanCount = document.createElement("span");
+    spanCount.classList.add("span-count");
+    spanCount.innerText = "1  ";
+    divInsertCount.appendChild(spanCount);
 
-  const spanCount = document.createElement("span");
-  spanCount.classList.add("span-count");
-  spanCount.innerText = "1  ";
-  divInsertCount.appendChild(spanCount);
-
-  const plus = document.createElement("i");
-  plus.classList.add("fa");
-  plus.classList.add("fa-plus");
-  plus.setAttribute("aria-hidden", "true");
-  divInsertCount.appendChild(plus);
-});
-container.appendChild(productContainer);
+    const plus = document.createElement("i");
+    plus.classList.add("fa");
+    plus.classList.add("fa-plus");
+    plus.setAttribute("aria-hidden", "true");
+    divInsertCount.appendChild(plus);
+  });
+  container.appendChild(productContainer);
+};
 
 ////////// search word //////////
 const searchWord = document.querySelector("#search-word");
@@ -352,8 +355,9 @@ const filterHandler = (event) => {
 // };
 
 ////////// event //////////
-window.addEventListener("load", () => {
-  get();
+window.addEventListener("load", async () => {
+  await fetch();
+  show();
   loadLocalStorage();
   searchWord.addEventListener("keyup", searchWordHandler);
 

@@ -61,7 +61,7 @@ const checkHandler = () => {
 };
 const createHandler = () => {
   const regexEmail = /^[\w_\.]+@[a-zA-Z]+\.([a-zA-Z]{2,3})$/;
-  // const regexPass = /^.{8}$/;
+  const regexPass = /^.{8,}/;
 
   const createInputName = createAccountName.value.trim();
   const createInputEmail = createAccountEmail.value.trim();
@@ -77,7 +77,7 @@ const createHandler = () => {
   if (count === 0) {
     if (createInputName !== "") {
       if (regexEmail.test(createInputEmail)) {
-        if (createInputPassword !== "") {
+        if (regexPass.test(createInputPassword)) {
           const user = {
             name: createInputName,
             email: createInputEmail,
@@ -91,7 +91,7 @@ const createHandler = () => {
             "Your account has been successfully created. Please login to go to the main page ..."
           );
         } else {
-          alert("Password cannot be empty ...");
+          alert("Password must have at least 8 characters ...");
         }
       } else {
         alert("Please enter the correct email ...");
