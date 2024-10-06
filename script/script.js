@@ -1,3 +1,19 @@
+////////// search word //////////
+const searchWord = document.querySelector("#search-word");
+
+////////// search price //////////
+const buttonSearch = document.querySelector(".search-button");
+const searchPrice = document.querySelector("#search-price");
+
+////////// filters //////////
+const filters = document.querySelectorAll(".filters");
+
+///////// sign out /////////
+const signOut = document.querySelector(".fa-sign-out");
+
+////////////////////////////////////////////////////////
+const cart = { items: [], totalPrice: 0 };
+
 const itemsDown = [];
 const priceCount = [];
 const products = [];
@@ -7,6 +23,36 @@ const btnPlus = [];
 const btnMinus = [];
 const spanCount = [];
 
+////////// fetch /////////
+const parseProductItems = [];
+async function fetch() {
+  try {
+    const request = await axios.get("https://fakestoreapi.com/products");
+    if (request.status === 200) {
+      request.data.map((item) => parseProductItems.push(item));
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+////////// get from storage //////////
+function loadLocalStorage() {
+  const unParsedUsers = localStorage.getItem("username");
+  if (unParsedUsers) {
+    const userName = JSON.parse(unParsedUsers);
+    alert(`Welcome ${userName} !!!`);
+    localStorage.removeItem("username");
+  }
+  const unParsedCart = localStorage.getItem("cart");
+  if (unParsedCart) {
+    const parsed = JSON.parse(unParsedCart);
+    cart.items = [...parsed.items];
+    cart.totalPrice = parsed.totalPrice;
+  }
+}
+
+////////// remove item from cart //////////
 const removeHandler = (id, event) => {
   const selectedItem = parseProductItems.find((item) => item.id === id);
   const index = cart.items.findIndex((item) => item.id === selectedItem.id);
@@ -16,11 +62,12 @@ const removeHandler = (id, event) => {
     (acc, cur) => Math.abs(cur.price * cur.count - acc),
     0
   );
-  event.target.parentElement.children[2].innerText = cart.items[index].count;
   cart.items.pop(cart.items[index]);
   localStorage.setItem("cart", JSON.stringify(cart));
+  event.target.parentElement.children[2].innerText = 1;
 };
 
+////////// reduce item ///////////
 const reduceHandler = (id, event) => {
   const selectedItem = parseProductItems.find((item) => item.id === id);
   const index = cart.items.findIndex((item) => item.id === selectedItem.id);
@@ -38,6 +85,7 @@ const reduceHandler = (id, event) => {
   }
 };
 
+////////// increase //////////
 const addHandler = (id, event) => {
   event.target.parentElement.children[0].style.display = "none";
   event.target.parentElement.children[1].style.display = "block";
@@ -52,10 +100,11 @@ const addHandler = (id, event) => {
   event.target.parentElement.children[2].innerText = cart.items[index].count;
 };
 
+////////// add new item to cart /////////
 const insertToCart = (product) => {
   const cartItem = {
     id: product.id,
-    title: product.title.slice(0, 20),
+    title: `${product.title.slice(0, 20)} ...`,
     price: product.price,
     count: 1,
   };
@@ -66,6 +115,8 @@ const insertToCart = (product) => {
   );
   localStorage.setItem("cart", JSON.stringify(cart));
 };
+
+////////// Check availability or not in the shopping cart //////////
 const clickHandler = (id, event) => {
   event.target.style.display = "none";
   event.target.nextSibling.style.display = "flex";
@@ -73,15 +124,20 @@ const clickHandler = (id, event) => {
   const index = cart.items.findIndex((item) => item.id === selectedItem.id);
   if (index >= 0) {
     if (cart.items[index].count > 1) {
-      spanCount[index].innerText = cart.items[index].count;
+      event.target.nextSibling.children[0].style.display = "none";
+      event.target.nextSibling.children[1].style.display = "block";
+      event.target.nextSibling.children[2].innerText = cart.items[index].count;
+    } else if (cart.items[index].count === 1) {
+      event.target.nextSibling.children[1].style.display = "none";
+      event.target.nextSibling.children[0].style.display = "block";
+      event.target.nextSibling.children[2].innerText = cart.items[index].count;
     }
   } else {
     insertToCart(selectedItem);
   }
 };
 
-// const productItems = localStorage.getItem("productItems");
-// const parseProductItems = JSON.parse(productItems);
+////////// show item //////////
 const show = () => {
   const container = document.querySelector(".container");
   const productContainer = document.createElement("div");
@@ -136,90 +192,40 @@ const show = () => {
     divInsertCount.style.display = "none";
     divPriceCount.appendChild(divInsertCount);
 
-    ///// input /////
-    // const input = document.createElement("input");
-    // input.classList.add("input-count");
-    // input.type = "number";
-    // divInsertCount.appendChild(input);
-    ///// trash and minus and span and plus /////
+    ///// trash /////
     const trash = document.createElement("i");
     trash.classList.add("fa");
     trash.classList.add("fa-trash");
     trash.setAttribute("aria-hidden", "true");
-    // btnTrash.push(trash);
     trash.addEventListener("click", (event) => removeHandler(item.id, event));
     divInsertCount.appendChild(trash);
 
+    ///// minus /////
     const minus = document.createElement("i");
     minus.classList.add("fa");
     minus.classList.add("fa-minus");
     minus.setAttribute("aria-hidden", "true");
     minus.style.display = "none";
-    // btnMinus.push(minus);
     minus.addEventListener("click", (event) => reduceHandler(item.id, event));
     divInsertCount.appendChild(minus);
 
+    ///// minus /////
     const spanCountShow = document.createElement("span");
     spanCountShow.classList.add("span-count");
     spanCountShow.innerText = "1  ";
     spanCount.push(spanCountShow);
     divInsertCount.appendChild(spanCountShow);
 
+    ///// plus /////
     const plus = document.createElement("i");
     plus.classList.add("fa");
     plus.classList.add("fa-plus");
     plus.setAttribute("aria-hidden", "true");
-    // btnPlus.push(plus);
     plus.addEventListener("click", (event) => addHandler(item.id, event));
     divInsertCount.appendChild(plus);
   });
   container.appendChild(productContainer);
 };
-
-////////// search word //////////
-const searchWord = document.querySelector("#search-word");
-
-////////// search price //////////
-const buttonSearch = document.querySelector(".search-button");
-const searchPrice = document.querySelector("#search-price");
-
-////////// filters //////////
-const filters = document.querySelectorAll(".filters");
-
-///////// sign out /////////
-const signOut = document.querySelector(".fa-sign-out");
-
-////////////////////////////////////////////////////////
-const cart = { items: [], totalPrice: 0 };
-
-//////////////
-
-const parseProductItems = [];
-async function fetch() {
-  try {
-    const request = await axios.get("https://fakestoreapi.com/products");
-    if (request.status === 200) {
-      request.data.map((item) => parseProductItems.push(item));
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-////////// get from storage //////////
-function loadLocalStorage() {
-  const unParsedUsers = localStorage.getItem("username");
-  if (unParsedUsers) {
-    const userName = JSON.parse(unParsedUsers);
-    alert(`Welcome ${userName} !!!`);
-  }
-  const unParsedCart = localStorage.getItem("cart");
-  if (unParsedCart) {
-    const parsed = JSON.parse(unParsedCart);
-    cart.items = [...parsed.items];
-    cart.totalPrice = parsed.totalPrice;
-  }
-}
 
 ////////// search word //////////
 const searchWordHandler = (event) => {
@@ -261,6 +267,7 @@ const searchPriceEnter = (event) => {
     showProduct(inputPrice);
   }
 };
+
 ////////// filter //////////
 const filterHandler = (event) => {
   filters.forEach((item) => {
@@ -281,64 +288,9 @@ const filterHandler = (event) => {
   });
 };
 
-////////// insert new item & remove item //////////
-// const insertHandler = (event) => {
-
-// if (event.target.innerText === "Add") {
-//   if (event.target.previousElementSibling.value) {
-//     event.target.style.width = "60px";
-//     event.target.innerText = "remove";
-//     const buttonsAdd2 = [...buttonsAdd];
-//     const productItem = {
-//       id: buttonsAdd2.indexOf(event.target),
-//       title:
-//         event.target.parentElement.parentElement.previousElementSibling
-//           .innerText,
-//       price: event.target.parentElement.previousElementSibling.innerText,
-//       count: event.target.previousElementSibling.value,
-//       total:
-//         event.target.parentElement.previousElementSibling.innerText *
-//         event.target.previousElementSibling.value,
-//     };
-//     for (let i in cart.item) {
-//       if (cart.item[i].id === productItem.id) {
-//         productItem.count =
-//           +cart.item[i].count + +event.target.previousElementSibling.value;
-//         cart.item.splice(i, i + 1);
-//       }
-//     }
-//     if (productItem.total !== 0) {
-//       cart.item.push(productItem);
-//       cart.totalPrice = cart.item.reduce(
-//         (acc, cur) => acc + cur.count * cur.price,
-//         0
-//       );
-//     }
-//     localStorage.setItem("cart", JSON.stringify(cart));
-//     event.target.parentElement.value = null;
-//   }
-// } else if (event.target.innerText === "remove") {
-//   const buttonsAdd2 = [...buttonsAdd];
-//   for (let i in cart.item) {
-//     if (cart.item[i].id === buttonsAdd2.indexOf(event.target)) {
-//       cart.item.splice(i, i + 1);
-//     }
-//   }
-//   if (cart.total !== 0) {
-//     cart.totalPrice = cart.item.reduce(
-//       (acc, cur) => cur.count * cur.price - acc,
-//       0
-//     );
-//   }
-//   localStorage.setItem("cart", JSON.stringify(cart));
-//   event.target.previousElementSibling.value = null;
-//   event.target.innerText = "Add";
-// }
-// };
-
+////////// sign out /////////
 const signOutHandler = () => {
   alert("You are logged out ...");
-  localStorage.removeItem("username");
   window.location.replace("./login/login.html");
 };
 
