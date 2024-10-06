@@ -208,6 +208,15 @@ img {
   color: purple;
   background-color: #fff;
 }
+.left-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+}
+.fa-sign-out {
+  color: #551a8b;
+}
 /* //////////////////////////////////////// */
 .fa-trash,
 .fa-minus,

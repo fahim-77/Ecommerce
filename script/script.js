@@ -186,6 +186,9 @@ const searchPrice = document.querySelector("#search-price");
 ////////// filters //////////
 const filters = document.querySelectorAll(".filters");
 
+///////// sign out /////////
+const signOut = document.querySelector(".fa-sign-out");
+
 ////////////////////////////////////////////////////////
 const cart = { items: [], totalPrice: 0 };
 
@@ -209,11 +212,7 @@ function loadLocalStorage() {
   if (unParsedUsers) {
     const userName = JSON.parse(unParsedUsers);
     alert(`Welcome ${userName} !!!`);
-    localStorage.removeItem("username");
   }
-  //  else {
-  //   window.location.replace("./login/login.html");
-  // }
   const unParsedCart = localStorage.getItem("cart");
   if (unParsedCart) {
     const parsed = JSON.parse(unParsedCart);
@@ -337,6 +336,12 @@ const filterHandler = (event) => {
 // }
 // };
 
+const signOutHandler = () => {
+  alert("You are logged out ...");
+  localStorage.removeItem("username");
+  window.location.replace("./login/login.html");
+};
+
 ////////// event //////////
 window.addEventListener("load", async () => {
   await fetch();
@@ -349,7 +354,5 @@ window.addEventListener("load", async () => {
 
   filters.forEach((button) => button.addEventListener("click", filterHandler));
 
-  // buttonsAdd.forEach((button) => {
-  //   button.addEventListener("click", insertHandler);
-  // });
+  signOut.addEventListener("click", signOutHandler);
 });
