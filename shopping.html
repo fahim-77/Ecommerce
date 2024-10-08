@@ -29,6 +29,9 @@
       .home {
         text-decoration: none;
       }
+      main {
+        position: relative;
+      }
       table {
         text-align: left;
         width: 700px;
@@ -45,11 +48,43 @@
         margin-bottom: 0.5rem;
         border-radius: 8px;
       }
+      .div-count {
+        padding-left: 0.2rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .count {
+        font-size: 1.2rem;
+      }
       tfoot {
         width: 100%;
         height: 60px;
         color: purple;
         border: 2px solid purple;
+      }
+      .payment {
+        width: 150px;
+        height: 50px;
+        color: #fff;
+        background-color: purple;
+        border-radius: 100px;
+        position: absolute;
+        right: 0;
+        font-size: 1.1rem;
+        font-weight: bold;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 0.8rem;
+      }
+      .fa-chevron-right {
+        padding: 0.6rem 0.8rem;
+        border-radius: 50%;
+        background-color: rgba(206, 147, 216, 0.4);
       }
     </style>
   </head>
@@ -78,16 +113,17 @@
         <tbody></tbody>
         <tfoot>
           <tr style="height: 60px">
-            <td
-              class="total-price"
-              style="font-size: 1.2rem; font-weight: bold"
-            >
-              Total Price :
-            </td>
-            <td style="font-weight: bold"></td>
+            <td style="font-size: 1.2rem; font-weight: bold">Total Price :</td>
+            <td class="total-price" style="font-weight: bold"></td>
           </tr>
         </tfoot>
       </table>
+      <a href="./payment.html">
+        <button class="payment">
+          <span>Payment</span>
+          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </button>
+      </a>
     </main>
     <script src="./script/scriptshopping.js"></script>
   </body>

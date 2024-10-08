@@ -41,7 +41,7 @@ const checkHandler = () => {
   let count = 0;
   const signInputEmail = signInEmail.value.trim();
   const signInputPassword = signInPassword.value.trim();
-  users.forEach((user) => {
+  users.filter((user) => {
     if (
       user.email === signInputEmail &&
       atob(user.password) === signInputPassword
@@ -90,6 +90,9 @@ const createHandler = () => {
           alert(
             "Your account has been successfully created. Please login to go to the main page ..."
           );
+          createAccountName.value = null;
+          createAccountEmail.value = null;
+          createAccountPassword.value = null;
         } else {
           alert("Password must have at least 8 characters ...");
         }

@@ -291,7 +291,7 @@ const filterHandler = (event) => {
 ////////// sign out /////////
 const signOutHandler = () => {
   alert("You are logged out ...");
-  window.location.replace("./login/login.html");
+  window.location.replace("../login/login.html");
 };
 
 ////////// event //////////
