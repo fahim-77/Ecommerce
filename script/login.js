@@ -14,7 +14,7 @@ const createAccountEmail = document.querySelector(".create-account-email");
 const createAccountPassword = document.querySelector(
   ".create-account-password"
 );
-const homePage = document.querySelector(".home");
+// const homePage = document.querySelector(".home");
 let users = [];
 
 ///////////////////////// storage //////////////////////
@@ -41,26 +41,25 @@ const checkHandler = () => {
   let count = 0;
   const signInputEmail = signInEmail.value.trim();
   const signInputPassword = signInPassword.value.trim();
-  users.filter((user) => {
-    if (
-      user.email === signInputEmail &&
-      atob(user.password) === signInputPassword
-    ) {
-      count++;
-      const homepageHandler = () => {
-        homePage.removeAttribute("href");
-        homePage.removeAttribute("title");
-        window.location.replace("../index.html");
-        localStorage.setItem("username", JSON.stringify(user.name));
-      };
-      homePage.addEventListener("click", homepageHandler);
-      alert("Login was successful ...");
-    }
-  });
-  if (count === 0) alert("The email or password is incorrect ...");
+
+  const index = users.findIndex(
+    (user) =>
+      user.email === signInputEmail && atob(user.password) === signInputPassword
+
+    // const homepageHandler = () => {
+    //   homePage.removeAttribute("href");
+    //   homePage.removeAttribute("title");
+    //   window.location.replace("../index.html");
+    //   localStorage.setItem("username", JSON.stringify(user.name));
+    // };
+    // homePage.addEventListener("click", homepageHandler);
+  );
+  if (index !== -1) {
+    alert("Login was successful ...");
+  } else alert("The email or password is incorrect ...");
 };
 const createHandler = () => {
-  const regexEmail = /^[\w_\.]+@[a-zA-Z]+\.([a-zA-Z]{2,3})$/;
+  const regexEmail = /^[a-zA-Z]+[\w_\.]+@[a-zA-Z]+\.([a-zA-Z]{2,3})$/;
   const regexPass = /^.{8,}/;
 
   const createInputName = createAccountName.value.trim();
@@ -100,7 +99,7 @@ const createHandler = () => {
         alert("Please enter the correct email ...");
       }
     } else {
-      alert("The Name cannot be empty ...");
+      alert("The Username cannot be empty ...");
     }
   }
 };

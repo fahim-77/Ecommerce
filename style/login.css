@@ -168,3 +168,18 @@ fieldset > input {
   color: purple;
   background-color: #fff;
 }
+
+/* /////////////////////////// */
+.radio {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: center;
+}
+.radio-item {
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+}
