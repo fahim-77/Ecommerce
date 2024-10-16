@@ -1,9 +1,7 @@
 import { itemsDown } from "./showItem.js";
 
-const searchWord = document.querySelector("#search-word");
-
 ////////// search word //////////
-const searchWordHandler = (event) => {
+export const searchWordHandler = (event) => {
   const inputWord = event.target.value.toLowerCase().trim();
   itemsDown.forEach((item) => {
     const title = item.children[0].innerText.toLowerCase();
@@ -14,4 +12,3 @@ const searchWordHandler = (event) => {
     }
   });
 };
-searchWord.addEventListener("keyup", searchWordHandler);

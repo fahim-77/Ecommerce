@@ -1,9 +1,9 @@
-const filters = document.querySelectorAll(".filters");
-
 import { products } from "./showItem.js";
 
+export const filters = document.querySelectorAll(".filters");
+
 ////////// filter //////////
-const filterHandler = (event) => {
+export const filterHandler = (event) => {
   filters.forEach((item) => {
     item.classList.remove("active");
   });
@@ -21,5 +21,3 @@ const filterHandler = (event) => {
     }
   });
 };
-
-filters.forEach((button) => button.addEventListener("click", filterHandler));

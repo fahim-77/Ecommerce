@@ -1,3 +1,5 @@
+import { fetchURL } from "../Utils/httpRequest.js";
+import { setCookie } from "../Utils/cookie.js";
 const btnSignIn = document.querySelector(".btn-sign-in");
 const btnSignUp = document.querySelector(".btn-sign-up");
 const container = document.querySelector(".container");
@@ -6,8 +8,8 @@ const container2 = document.querySelector(".container2");
 const btnLogin = document.querySelector(".login");
 const btnCreate = document.querySelector(".create");
 
-const signInEmail = document.querySelector(".sign-in-email");
-const signInPassword = document.querySelector(".sign-in-password");
+const signInInput = document.querySelectorAll(".sign-in-input");
+console.log(signInInput);
 
 const createAccountName = document.querySelector(".create-account-name");
 const createAccountEmail = document.querySelector(".create-account-email");
@@ -37,15 +39,15 @@ const singIn = () => {
 };
 
 /////////////////// event /////////////////////
-const checkHandler = () => {
+const checkHandler = async () => {
   let count = 0;
-  const signInputEmail = signInEmail.value.trim();
-  const signInputPassword = signInPassword.value.trim();
+  const signInputUserName = signInInput[0].value.trim();
+  const signInputPassword = signInInput[1].value.trim();
 
   const index = users.findIndex(
     (user) =>
-      user.email === signInputEmail && atob(user.password) === signInputPassword
-
+      user.username === signInputUserName &&
+      atob(user.password) === signInputPassword
     // const homepageHandler = () => {
     //   homePage.removeAttribute("href");
     //   homePage.removeAttribute("title");
@@ -56,7 +58,22 @@ const checkHandler = () => {
   );
   if (index !== -1) {
     alert("Login was successful ...");
-  } else alert("The email or password is incorrect ...");
+  } else {
+    const {
+      error,
+      data: { token },
+    } = await fetchURL("auth/login", "POST", {
+      username: signInputUserName,
+      password: signInputPassword,
+    });
+    if (!error) {
+      const day = 24 * 60 * 60;
+      setCookie("token", token, "path=/", "max-age=86400");
+      location.assign("../index.html");
+    } else {
+      alert("The email or password is incorrect ...");
+    }
+  }
 };
 const createHandler = () => {
   const regexEmail = /^[a-zA-Z]+[\w_\.]+@[a-zA-Z]+\.([a-zA-Z]{2,3})$/;
@@ -78,7 +95,7 @@ const createHandler = () => {
       if (regexEmail.test(createInputEmail)) {
         if (regexPass.test(createInputPassword)) {
           const user = {
-            name: createInputName,
+            username: createInputName,
             email: createInputEmail,
             password: btoa(createInputPassword),
           };

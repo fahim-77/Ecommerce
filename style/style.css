@@ -17,6 +17,7 @@ body {
   height: 70px;
   color: white;
   background-color: purple;
+  font-size: 2rem;
   font-weight: bold;
   display: flex;
   flex-direction: column;

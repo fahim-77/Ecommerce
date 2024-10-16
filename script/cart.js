@@ -1,3 +1,4 @@
+import { reduceHandler } from "./basketOperaion.js";
 const tBody = document.querySelector("tbody");
 const totalPrice = document.querySelector(".total-price");
 const cart = { items: [], totalPrice: 0 };
@@ -22,7 +23,7 @@ const removeHandler = (event, id) => {
   totalPrice.innerText = Number(cart.totalPrice.toFixed(2));
 };
 
-const reduceHandler = (event, id) => {
+const reduceHandlerCart = (event, id) => {
   const selectedItem = cart.items.find((item) => item.id === id);
   const index = cart.items.findIndex((item) => item.id === selectedItem.id);
   cart.items[index].count -= 1;
@@ -39,7 +40,7 @@ const reduceHandler = (event, id) => {
   }
 };
 
-const addHandler = (event, id) => {
+const addHandler = (id, event) => {
   const selectedItem = cart.items.find((item) => item.id === id);
   const index = cart.items.findIndex((item) => item.id === selectedItem.id);
   cart.items[index].count += 1;
@@ -95,7 +96,7 @@ function show() {
     minus.classList.add("fa");
     minus.classList.add("fa-minus");
     minus.addEventListener("click", (event) =>
-      reduceHandler(event, cart.items[i].id)
+      reduceHandlerCart(event, cart.items[i].id)
     );
     divCount.appendChild(minus);
 
@@ -116,7 +117,7 @@ function show() {
     plus.classList.add("fa");
     plus.classList.add("fa-plus");
     plus.addEventListener("click", (event) =>
-      addHandler(event, cart.items[i].id)
+      addHandler(cart.items[i].id, event)
     );
     divCount.appendChild(plus);
 

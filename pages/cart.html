@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>shopping cart</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="../style/cart.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="navigation">
+        <a class="home" href="../index.html">
+          <i class="fa fa-home" aria-hidden="true"></i>
+          <span>Home</span>
+        </a>
+      </nav>
+    </header>
+    <main>
+      <table>
+        <caption>
+          shopping cart
+        </caption>
+        <thead>
+          <tr>
+            <th></th>
+            <th>title</th>
+            <th>price</th>
+            <th>count</th>
+            <th>Total Price</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr style="height: 60px">
+            <td style="font-size: 1.2rem; font-weight: bold" colspan="2">
+              Total shopping cart :
+            </td>
+            <td class="total-price" style="font-weight: bold"></td>
+          </tr>
+        </tfoot>
+      </table>
+      <a href="./payment.html">
+        <button class="payment">
+          <span>Payment</span>
+          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </button>
+      </a>
+    </main>
+    <script src="../script/scriptshopping.js" type="module"></script>
+  </body>
+</html>
