@@ -22,7 +22,7 @@ header {
 a,
 p {
   background: -webkit-linear-gradient(black, purple);
-  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 a {
@@ -57,13 +57,13 @@ img {
   width: 150px;
   height: 150px;
 }
-ol {
-  list-style-type: none;
-  list-style-position: inside;
-}
 
 ul {
   list-style-type: circle;
+}
+.list2 {
+  list-style-type: none;
+  list-style-position: inside;
 }
 li {
   padding: 0 0 1rem 2rem;

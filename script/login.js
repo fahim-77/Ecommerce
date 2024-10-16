@@ -19,14 +19,28 @@ const createAccountPassword = document.querySelector(
 // const homePage = document.querySelector(".home");
 let users = [];
 
+///////////////////////
+async function fetch() {
+  const { error, data } = await fetchURL("users", "Get");
+  if (!error) {
+    data.map((item) => {
+      item.password = btoa(item.password);
+      users.push(item);
+    });
+  }
+}
 ///////////////////////// storage //////////////////////
 function loadLocalStorage() {
   const unParsedUsers = localStorage.getItem("users");
   if (unParsedUsers) {
     const parsedUsers = JSON.parse(unParsedUsers);
-    users = [...parsedUsers];
+    parsedUsers.map((user) => {
+      users.push(user);
+    });
   }
 }
+
+console.log(users);
 ///////////////////// replace container ////////////////////
 const createAccount = () => {
   container.style.display = "none";
@@ -57,8 +71,6 @@ const checkHandler = async () => {
     // homePage.addEventListener("click", homepageHandler);
   );
   if (index !== -1) {
-    alert("Login was successful ...");
-  } else {
     const {
       error,
       data: { token },
@@ -70,9 +82,10 @@ const checkHandler = async () => {
       const day = 24 * 60 * 60;
       setCookie("token", token, "path=/", "max-age=86400");
       location.assign("../index.html");
-    } else {
-      alert("The email or password is incorrect ...");
+      alert("Login was successful ...");
     }
+  } else {
+    alert("The email or password is incorrect ...");
   }
 };
 const createHandler = () => {
@@ -85,7 +98,7 @@ const createHandler = () => {
 
   let count = 0;
   users.forEach((user) => {
-    if (user.name === createInputName || user.email === createInputEmail) {
+    if (user.username === createInputName || user.email === createInputEmail) {
       count++;
       alert("A user with this name or email already exists ...");
     }
@@ -121,7 +134,8 @@ const createHandler = () => {
   }
 };
 
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
+  await fetch();
   loadLocalStorage();
   btnSignUp.addEventListener("click", createAccount);
   btnSignIn.addEventListener("click", singIn);

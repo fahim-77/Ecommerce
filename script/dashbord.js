@@ -1,7 +1,11 @@
 import { fetchURL } from "../Utils/httpRequest.js";
 
+const table = document.querySelector(".discount");
+table.style.display = "none";
 const div = document.querySelector(".show-list");
 const listItem = document.querySelectorAll("li");
+let click = 0;
+let click2 = 0;
 
 const users = [];
 async function fetch() {
@@ -21,23 +25,39 @@ const load = () => {
   }
 };
 
-console.log(users);
 const showHandler = (event) => {
-  div.classList.add("design");
-  const list = document.createElement("ol");
-  users.map((user) => {
-    console.log(user.username);
-    const li = document.createElement("li");
-    li.innerText = `${user.username}`;
-    list.appendChild(li);
-  });
-  div.appendChild(list);
-  event.target.disabled = "true";
+  click++;
+  if (click === 1) {
+    div.style.display = "block";
+    div.classList.add("design");
+    const list = document.createElement("ul");
+    list.classList.add("list2");
+    users.map((user) => {
+      const li = document.createElement("li");
+      li.innerText = `${user.username}`;
+      list.appendChild(li);
+    });
+    div.appendChild(list);
+    users.splice(0);
+  } else if (click === 2) {
+    div.style.display = "none";
+    click = 0;
+  }
 };
-console.log(users);
 
-window.addEventListener("load", () => {
-  fetch();
+const showCode = () => {
+  click2++;
+  if (click2 === 1) {
+    table.style.display = "block";
+  } else if (click2 === 2) {
+    table.style.display = "none";
+    click2 = 0;
+  }
+};
+
+window.addEventListener("load", async () => {
+  await fetch();
   load();
-  listItem.forEach((item) => item.addEventListener("click", showHandler));
+  listItem[0].addEventListener("click", showHandler);
+  listItem[1].addEventListener("click", showCode);
 });
