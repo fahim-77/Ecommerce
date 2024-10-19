@@ -40,7 +40,7 @@ main {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 2rem;
+  gap: 5rem;
 }
 .side-bar {
   width: 250px;
@@ -62,7 +62,8 @@ ul {
   list-style-type: circle;
 }
 .list2 {
-  list-style-type: none;
+  padding: 1rem 0;
+  list-style-type: disc;
   list-style-position: inside;
 }
 li {
@@ -90,4 +91,25 @@ li {
 
 ::-webkit-scrollbar-thumb {
   background-image: linear-gradient(black, purple);
+}
+
+/* ///////////////////////////////////////////// */
+.discount {
+  background-color: rgba(33, 33, 33, 0.37);
+  padding: 1rem;
+  text-align: left;
+  vertical-align: bottom;
+  border-spacing: 30px 20px;
+}
+caption {
+  padding-bottom: 1rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+th {
+  font-size: 1.4rem;
+}
+td {
+  color: #fff;
+  font-size: 1.2rem;
 }

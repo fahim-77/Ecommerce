@@ -195,22 +195,26 @@ img {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  align-items: center;
   gap: 3rem;
 }
 .about,
 .contact,
-.link-shop {
+.link-shop,
+.dashbord {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: baseline;
   text-decoration: none;
 }
 .about > i,
-.contact > i {
+.contact > i,
+.dashbord > i {
   font-size: 1rem;
 }
 .about > span,
-.contact > span {
+.contact > span,
+.dashbord > span {
   color: purple;
   background-color: #fff;
 }

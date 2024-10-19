@@ -4,104 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      body {
-        width: 100vw;
-        height: 100vh;
-        color: black;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        background-image: url("/img/pic4.jpg");
-        background-size: cover;
-      }
-      .container {
-        width: 500px;
-        height: 540px;
-        background-color: rgba(106, 27, 154, 0.4);
-        border-top-left-radius: 100px;
-        border-bottom-right-radius: 100px;
-        box-shadow: inset 0 0 10px 2px white;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-      }
-      .container2 {
-        width: 450px;
-        height: 490px;
-        padding: 10px;
-        position: relative;
-        font-size: 1.4rem;
-        background-color: rgba(250, 250, 250, 0.7);
-        border-radius: inherit;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 0.8rem;
-      }
-      .discount {
-        width: 310px;
-        height: 50px;
-        padding: 0 0.5rem;
-        margin-bottom: 2rem;
-        border-radius: 20px;
-        border-top-right-radius: 0;
-        border-bottom-left-radius: 0;
-        display: flex;
-        flex-direction: row;
-        gap: 0.4rem;
-        align-items: center;
-        background-color: purple;
-      }
-      input {
-        width: 220px;
-        height: 40px;
-        font-size: 1.1rem;
-        padding-left: 0.5rem;
-        outline: none;
-        border: none;
-        border-radius: inherit;
-      }
-      button {
-        color: #fff;
-        font-size: 1.5rem;
-        background-color: transparent;
-        border: none;
-      }
-      .total,
-      .final,
-      .profit-div {
-        display: flex;
-        flex-direction: row;
-        gap: 1.5rem;
-      }
-      .total-shopping,
-      .profit,
-      .final-price {
-        color: purple;
-        margin-bottom: 2rem;
-        font-size: 1.5rem;
-      }
-      .pay {
-        width: 450px;
-        height: 80px;
-        margin-top: 0.5rem;
-        color: #fff;
-        font-size: 2.5rem;
-        background-image: linear-gradient(#38002f, #45034b, #661679, #9949aa);
-        border-bottom-right-radius: 100px;
-        position: absolute;
-        bottom: 0;
-      }
-    </style>
+    <link rel="stylesheet" href="../style/payment.css" />
   </head>
   <body>
     <div class="container">
@@ -118,63 +21,17 @@
           />
           <button class="apply">Apply</button>
         </div>
+        <div class="profit-div">
+          <span>Your Profit Is :</span>
+          <span class="profit"></span>
+        </div>
+        <div class="final">
+          <span>Final Price Is :</span>
+          <span class="final-price"></span>
+        </div>
         <button class="pay">Payment</button>
       </div>
     </div>
-    <!-- <img src="./img/patern.jfif" alt="" /> -->
-    <script>
-      const container2 = document.querySelector(".container2");
-      const totalPrice = document.querySelector(".total-shopping");
-      const btnApply = document.querySelector(".apply");
-      const input = document.querySelector(".code");
-      const cart = { items: [], totalPrice: 0 };
-      const loadLocalStorage = () => {
-        const unParsedCart = localStorage.getItem("cart");
-        if (unParsedCart) {
-          const parsed = JSON.parse(unParsedCart);
-          cart.items = [...parsed.items];
-          cart.totalPrice = parsed.totalPrice;
-        }
-      };
-      const show = () => {
-        totalPrice.innerText = cart.totalPrice;
-      };
-
-      const applyHandler = () => {
-        const code = input.value;
-        input.value = null;
-        if (code === "paeez03") {
-          const profitDiv = document.createElement("div");
-          profitDiv.classList.add("profit-div");
-          container2.appendChild(profitDiv);
-          const spanProfit = document.createElement("span");
-          spanProfit.innerText = "Your Profit Is :";
-          profitDiv.prepend(spanProfit);
-          const profit = document.createElement("span");
-          profit.classList.add("profit");
-          profitDiv.appendChild(profit);
-          const off = Number((cart.totalPrice * 0.1).toFixed(2));
-          profit.innerText = off;
-          const finalDiv = document.createElement("div");
-          finalDiv.classList.add("final");
-          container2.appendChild(finalDiv);
-          const spanFinal = document.createElement("span");
-          spanFinal.innerText = "Final Price Is :";
-          finalDiv.prepend(spanFinal);
-          const finalPrice = document.createElement("span");
-          finalPrice.classList.add("final-price");
-          finalDiv.appendChild(finalPrice);
-          finalPrice.innerText = cart.totalPrice - off;
-        } else {
-          alert("The discount code entered is incorrect ...");
-        }
-      };
-
-      window.addEventListener("load", () => {
-        loadLocalStorage();
-        show();
-        btnApply.addEventListener("click", applyHandler);
-      });
-    </script>
+    <script src="../script/payment.js" type="module"></script>
   </body>
 </html>

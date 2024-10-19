@@ -7,6 +7,13 @@ import { filters, filterHandler } from "./filter.js";
 import { fetchURL } from "../Utils/httpRequest.js";
 import { show } from "./showItem.js";
 import { setCookie, getTokenCookie } from "../Utils/cookie.js";
+import {
+  cart,
+  loadAll,
+  loadAllCart,
+  loadCart,
+  allCarts,
+} from "./loadlocalstorage.js";
 
 ///// search word /////
 const searchWord = document.querySelector("#search-word");
@@ -19,7 +26,6 @@ const searchPrice = document.querySelector("#search-price");
 const signOut = document.querySelector(".fa-sign-out");
 
 ////////////////////////////////////////////////////////
-export const cart = { userName: null, items: [], totalPrice: 0 };
 
 ////////// fetch /////////
 export const parseProductItems = [];
@@ -31,26 +37,54 @@ async function fetch() {
   }
 }
 
+// function check(array, cart) {
+//   if (array) {
+//     array.index
+//     array.inde((item) => {
+//       console.log(item);
+//       if (item.username === cart.username) {
+//         item.items = [...cart.items];
+//         item.totalPrice = cart.totalPrice;
+//       }
+//     });
+//   } else {
+//     allCarts.push(cart);
+//   }
+// }
 ////////// get from storage //////////
-function loadLocalStorage() {
-  const unParsedUsers = localStorage.getItem("username");
-  if (unParsedUsers) {
-    const userName = JSON.parse(unParsedUsers);
-    cart.userName = unParsedUsers;
-    alert(`Welcome ${userName} !!!`);
-    // localStorage.removeItem("username");
-  }
-  const unParsedCart = localStorage.getItem("cart");
-  if (unParsedCart) {
-    const parsed = JSON.parse(unParsedCart);
-    cart.items = [...parsed.items];
-    cart.totalPrice = parsed.totalPrice;
-  }
-}
+// function loadLocalStorage() {
+//   const unParsedUsers = localStorage.getItem("username");
+//   if (unParsedUsers) {
+//     const userName = JSON.parse(unParsedUsers);
+//     cart.userName = unParsedUsers;
+//     alert(`Welcome ${userName} !!!`);
+//     localStorage.removeItem("username");
+//   }
+//   const unParsedCart = localStorage.getItem("cart");
+//   if (unParsedCart) {
+//     const parsed = JSON.parse(unParsedCart);
+//     cart.items = [...parsed.items];
+//     cart.totalPrice = parsed.totalPrice;
+//   }
+// }
 
 let token = null;
 ////////// sign out /////////
 const signOutHandler = () => {
+  loadCart();
+  loadAll();
+  const index = allCarts.findIndex((item) => item.username === cart.username);
+  if (index === -1) {
+    allCarts.push(cart);
+  } else {
+    allCarts[index].items = [...cart.items];
+    allCarts[index].totalPrice = cart.totalPrice;
+  }
+  console.log(index);
+  // check(allCarts, cart);
+  console.log(allCarts);
+  localStorage.setItem("allCarts", JSON.stringify(allCarts));
+  localStorage.removeItem("cart");
   alert("You are logged out ...");
   setCookie("token", token, "path=/", "expires=Thu, 01 Jan 1970 00:00:00 UTC");
   window.location.assign("../pages/login.html");
@@ -60,7 +94,7 @@ const signOutHandler = () => {
 window.addEventListener("load", async () => {
   await fetch();
   show();
-  loadLocalStorage();
+  loadAllCart();
   ///// search word /////
   searchWord.addEventListener("keyup", searchWordHandler);
 

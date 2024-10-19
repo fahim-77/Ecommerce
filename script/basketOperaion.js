@@ -1,4 +1,5 @@
-import { parseProductItems, cart } from "./script.js";
+import { parseProductItems } from "./script.js";
+import { cart } from "./loadlocalstorage.js";
 
 ////////// remove item from cart //////////
 export const removeHandler = (id, event) => {
@@ -32,6 +33,7 @@ export const addHandler = (id, event) => {
   event.target.parentElement.children[0].style.display = "none";
   event.target.parentElement.children[1].style.display = "block";
   const selectedItem = parseProductItems.find((item) => item.id === id);
+  console.log(cart);
   const index = cart.items.findIndex((item) => item.id === selectedItem.id);
   cart.items[index].count += 1;
   cart.totalPrice += cart.items[index].price;

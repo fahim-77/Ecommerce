@@ -11,6 +11,7 @@ body {
   align-items: center;
 }
 main {
+  width: 500px;
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
@@ -31,4 +32,19 @@ img {
 }
 span {
   font-size: 2rem;
+}
+
+.home > span {
+  font-size: 1rem;
+}
+/* /////////////////// */
+.navigation {
+  width: 500px;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.home {
+  text-decoration: none;
 }

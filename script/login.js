@@ -11,13 +11,9 @@ const btnCreate = document.querySelector(".create");
 const signInInput = document.querySelectorAll(".sign-in-input");
 console.log(signInInput);
 
-const createAccountName = document.querySelector(".create-account-name");
-const createAccountEmail = document.querySelector(".create-account-email");
-const createAccountPassword = document.querySelector(
-  ".create-account-password"
-);
-// const homePage = document.querySelector(".home");
-let users = [];
+const createAccountInput = document.querySelectorAll(".create-account-input");
+
+const users = [];
 
 ///////////////////////
 async function fetch() {
@@ -40,7 +36,6 @@ function loadLocalStorage() {
   }
 }
 
-console.log(users);
 ///////////////////// replace container ////////////////////
 const createAccount = () => {
   container.style.display = "none";
@@ -62,27 +57,19 @@ const checkHandler = async () => {
     (user) =>
       user.username === signInputUserName &&
       atob(user.password) === signInputPassword
-    // const homepageHandler = () => {
-    //   homePage.removeAttribute("href");
-    //   homePage.removeAttribute("title");
-    //   window.location.replace("../index.html");
-    //   localStorage.setItem("username", JSON.stringify(user.name));
-    // };
-    // homePage.addEventListener("click", homepageHandler);
   );
   if (index !== -1) {
-    const {
-      error,
-      data: { token },
-    } = await fetchURL("auth/login", "POST", {
+    const { error, data } = await fetchURL("auth/login", "POST", {
       username: signInputUserName,
       password: signInputPassword,
     });
     if (!error) {
-      const day = 24 * 60 * 60;
-      setCookie("token", token, "path=/", "max-age=86400");
+      setCookie("token", data.token, "path=/", "max-age=86400");
       location.assign("../index.html");
       alert("Login was successful ...");
+      localStorage.setItem("username", JSON.stringify(signInputUserName));
+    } else {
+      alert("Sorry, you do not have permission to enter the store ...");
     }
   } else {
     alert("The email or password is incorrect ...");
@@ -92,9 +79,9 @@ const createHandler = () => {
   const regexEmail = /^[a-zA-Z]+[\w_\.]+@[a-zA-Z]+\.([a-zA-Z]{2,3})$/;
   const regexPass = /^.{8,}/;
 
-  const createInputName = createAccountName.value.trim();
-  const createInputEmail = createAccountEmail.value.trim();
-  const createInputPassword = createAccountPassword.value.trim();
+  const createInputName = createAccountInput[0].value.trim();
+  const createInputEmail = createAccountInput[1].value.trim();
+  const createInputPassword = createAccountInput[2].value.trim();
 
   let count = 0;
   users.forEach((user) => {
@@ -107,21 +94,33 @@ const createHandler = () => {
     if (createInputName !== "") {
       if (regexEmail.test(createInputEmail)) {
         if (regexPass.test(createInputPassword)) {
-          const user = {
-            username: createInputName,
-            email: createInputEmail,
-            password: btoa(createInputPassword),
-          };
-          users.push(user);
-          localStorage.setItem("users", JSON.stringify(users));
-          container2.style.display = "none";
-          container.style.display = "flex";
-          alert(
-            "Your account has been successfully created. Please login to go to the main page ..."
-          );
-          createAccountName.value = null;
-          createAccountEmail.value = null;
-          createAccountPassword.value = null;
+          let role = null;
+          if (createAccountInput[3].checked) {
+            role = createAccountInput[3].value;
+          } else if (createAccountInput[4].checked) {
+            role = createAccountInput[4].value;
+          }
+
+          if (role) {
+            const user = {
+              username: createInputName,
+              email: createInputEmail,
+              password: btoa(createInputPassword),
+              role,
+            };
+            users.push(user);
+            localStorage.setItem("users", JSON.stringify(users));
+            container2.style.display = "none";
+            container.style.display = "flex";
+            alert(
+              "Your account has been successfully created. Please login to go to the main page ..."
+            );
+            createAccountInput[0].value = null;
+            createAccountInput[1].value = null;
+            createAccountInput[2].value = null;
+          } else {
+            alert("Please complete all fields ...");
+          }
         } else {
           alert("Password must have at least 8 characters ...");
         }

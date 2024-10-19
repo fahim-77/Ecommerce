@@ -14,28 +14,6 @@
     <link rel="stylesheet" href="../style/login.css" />
   </head>
   <body>
-    <header>
-      <nav class="navigation">
-        <div class="pages">
-          <a
-            class="home"
-            href="./login.html"
-            title="Login first to access the main page ..."
-          >
-            <i class="fa fa-home" aria-hidden="true"></i>
-            <span>Home</span>
-          </a>
-          <!-- <a class="about" href="../aboutus.html">
-            <i class="fa fa-users" aria-hidden="true"></i>
-            <span>About Us</span>
-          </a>
-          <a class="contact" href="../contactus.html">
-            <i class="fa fa-phone" aria-hidden="true"></i>
-            <span>Contact Us</span>
-          </a> -->
-        </div>
-      </nav>
-    </header>
     <main>
       <div class="container">
         <div class="sign-in">
@@ -70,21 +48,21 @@
           <fieldset>
             <input
               type="text"
-              class="create-account-name"
+              class="create-account-input"
               placeholder="User name"
             />
           </fieldset>
           <fieldset>
             <input
               type="text"
-              class="create-account-email"
+              class="create-account-input"
               placeholder="Email"
             />
           </fieldset>
           <fieldset>
             <input
               type="password"
-              class="create-account-password"
+              class="create-account-input"
               placeholder="Password"
               minlength="8"
             />
@@ -92,11 +70,23 @@
           <fieldset class="radio" style="background-color: #fff">
             <div class="radio-item">
               <label for="admin">Admin</label>
-              <input type="radio" id="admin" name="role" />
+              <input
+                type="radio"
+                id="admin"
+                name="role"
+                value="admin"
+                class="create-account-input"
+              />
             </div>
             <div class="radio-item">
               <label for="user">User</label>
-              <input type="radio" id="user" name="role" />
+              <input
+                type="radio"
+                id="user"
+                name="role"
+                value="user"
+                class="create-account-input"
+              />
             </div>
           </fieldset>
           <button class="create">SING UP</button>

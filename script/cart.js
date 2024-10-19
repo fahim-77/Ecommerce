@@ -1,16 +1,17 @@
-import { reduceHandler } from "./basketOperaion.js";
+import { valid } from "./Validation.js";
+import { cart, loadCart } from "./loadlocalstorage.js";
 const tBody = document.querySelector("tbody");
 const totalPrice = document.querySelector(".total-price");
-const cart = { items: [], totalPrice: 0 };
+// const cart = { items: [], totalPrice: 0 };
 
-const loadLocalStorage = () => {
-  const unParsedCart = localStorage.getItem("cart");
-  if (unParsedCart) {
-    const parsed = JSON.parse(unParsedCart);
-    cart.items = [...parsed.items];
-    cart.totalPrice = parsed.totalPrice;
-  }
-};
+// const loadLocalStorage = () => {
+//   const unParsedCart = localStorage.getItem("cart");
+//   if (unParsedCart) {
+//     const parsed = JSON.parse(unParsedCart);
+//     cart.items = [...parsed.items];
+//     cart.totalPrice = parsed.totalPrice;
+//   }
+// };
 
 const removeHandler = (event, id) => {
   const selectedItem = cart.items.find((item) => item.id === id);
@@ -130,6 +131,7 @@ function show() {
 }
 
 window.addEventListener("load", () => {
-  loadLocalStorage();
+  loadCart();
   show();
 });
+window.addEventListener("DOMContentLoaded", valid);
