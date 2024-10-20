@@ -6,7 +6,6 @@ function discountCode(code, percent) {
   };
   discounts.push(discount);
   localStorage.setItem("discount", JSON.stringify(discounts));
-  console.log(discounts);
 }
 
 discountCode("paeeze_1403", 10);

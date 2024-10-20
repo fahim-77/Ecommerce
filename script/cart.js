@@ -1,18 +1,10 @@
 import { valid } from "./Validation.js";
 import { cart, loadCart } from "./loadlocalstorage.js";
+
 const tBody = document.querySelector("tbody");
 const totalPrice = document.querySelector(".total-price");
-// const cart = { items: [], totalPrice: 0 };
 
-// const loadLocalStorage = () => {
-//   const unParsedCart = localStorage.getItem("cart");
-//   if (unParsedCart) {
-//     const parsed = JSON.parse(unParsedCart);
-//     cart.items = [...parsed.items];
-//     cart.totalPrice = parsed.totalPrice;
-//   }
-// };
-
+/////////////////// remove item from cart ///////////////////
 const removeHandler = (event, id) => {
   const selectedItem = cart.items.find((item) => item.id === id);
   const index = cart.items.findIndex((item) => item.id === selectedItem.id);
@@ -24,6 +16,7 @@ const removeHandler = (event, id) => {
   totalPrice.innerText = Number(cart.totalPrice.toFixed(2));
 };
 
+/////////////////// reduce item /////////////////////
 const reduceHandlerCart = (event, id) => {
   const selectedItem = cart.items.find((item) => item.id === id);
   const index = cart.items.findIndex((item) => item.id === selectedItem.id);
@@ -41,6 +34,7 @@ const reduceHandlerCart = (event, id) => {
   }
 };
 
+//////////////////// increase ////////////////////
 const addHandler = (id, event) => {
   const selectedItem = cart.items.find((item) => item.id === id);
   const index = cart.items.findIndex((item) => item.id === selectedItem.id);
@@ -53,6 +47,7 @@ const addHandler = (id, event) => {
   totalPrice.innerText = Number(cart.totalPrice.toFixed(2));
 };
 
+////////////////////// show cart item ////////////////////
 function show() {
   for (let i in cart.items) {
     const tRow = document.createElement("tr");
@@ -127,7 +122,7 @@ function show() {
     tRow.appendChild(tDataTotalPrice);
     tDataTotalPrice.innerHTML = cart.items[i].price * cart.items[i].count;
   }
-  totalPrice.innerText = cart.totalPrice;
+  totalPrice.innerText = Number(cart.totalPrice).toFixed(2);
 }
 
 window.addEventListener("load", () => {

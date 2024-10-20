@@ -94,3 +94,9 @@ button {
   position: absolute;
   bottom: 0;
 }
+/* //// */
+.delete {
+  text-decoration: line-through;
+  text-decoration-color: #fff;
+  text-decoration-style: wavy;
+}

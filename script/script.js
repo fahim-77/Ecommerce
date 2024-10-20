@@ -5,12 +5,11 @@ import { fetchURL } from "../Utils/httpRequest.js";
 import { show } from "./showItem.js";
 import { setCookie, getTokenCookie } from "../Utils/cookie.js";
 import {
-  cart,
   loadAllCart,
+  cart,
   checkAllCart,
   loadCart,
   allCarts,
-  checkAllCart,
 } from "./loadlocalstorage.js";
 
 ////////// search word //////////
@@ -57,6 +56,7 @@ window.addEventListener("load", async () => {
   await fetch();
   show();
   checkAllCart();
+  loadCart();
   ///// search word /////
   searchWord.addEventListener("keyup", searchWordHandler);
 

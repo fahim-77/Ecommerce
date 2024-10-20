@@ -1,5 +1,11 @@
-import { loadDiscount, discountCode } from "./loadlocalstorage.js";
+import {
+  loadDiscount,
+  discountCode,
+  loadCart,
+  cart,
+} from "./loadlocalstorage.js";
 import { valid } from "./Validation.js";
+
 const totalPrice = document.querySelector(".total-shopping");
 const profit = document.querySelector(".profit");
 profit.parentElement.style.display = "none";
@@ -7,29 +13,32 @@ const finalPrice = document.querySelector(".final-price");
 finalPrice.parentElement.style.display = "none";
 const btnApply = document.querySelector(".apply");
 const input = document.querySelector(".code");
-const cart = { items: [], totalPrice: 0 };
-const loadLocalStorage = () => {
-  const unParsedCart = localStorage.getItem("cart");
-  if (unParsedCart) {
-    const parsed = JSON.parse(unParsedCart);
-    cart.items = [...parsed.items];
-    cart.totalPrice = parsed.totalPrice;
-  }
-};
+
 const show = () => {
   totalPrice.innerText = Number(cart.totalPrice).toFixed(2);
 };
 
+//////////////////// Return to the initial state ////////////////////
+function initialState() {
+  totalPrice.classList.forEach((item) => {
+    if (item === "delete") {
+      totalPrice.classList.remove("delete");
+    }
+  });
+  profit.parentElement.style.display = "none";
+  finalPrice.parentElement.style.display = "none";
+}
+
+//////////////////// Apply discount code ///////////////////
 const applyHandler = () => {
   const inputCode = input.value;
   const index = discountCode.findIndex((item) => item.code === inputCode);
-  console.log(index);
   if (index === -1) {
-    input.value = null;
+    initialState();
     alert("The discount code entered is incorrect ...");
-    profit.parentElement.style.display = "none";
-    finalPrice.parentElement.style.display = "none";
+    input.value = null;
   } else {
+    totalPrice.classList.add("delete");
     profit.parentElement.style.display = "block";
     finalPrice.parentElement.style.display = "block";
     const off = Number(
@@ -40,11 +49,17 @@ const applyHandler = () => {
   }
 };
 
+//////////////////// Apply changes as soon as the code is removed ///////////////////
+const removeCode = () => {
+  initialState();
+};
+
 window.addEventListener("load", () => {
-  loadLocalStorage();
+  loadCart();
   show();
   loadDiscount();
   btnApply.addEventListener("click", applyHandler);
+  input.addEventListener("keyup", removeCode);
 });
 
 window.addEventListener("DOMContentLoaded", valid);

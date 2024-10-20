@@ -1,8 +1,6 @@
 import { priceCount } from "./showItem.js";
 
-////////// search price //////////
-
-///// show product item
+///// show product item /////
 function showProduct(inputPrice) {
   priceCount.forEach((price) => {
     const prices = price.children[0].innerText;

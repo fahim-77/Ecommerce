@@ -1,7 +1,7 @@
 import { parseProductItems } from "./script.js";
 import { cart } from "./loadlocalstorage.js";
 
-////////// remove item from cart //////////
+//////////////////// remove item from cart ////////////////////
 export const removeHandler = (id, event) => {
   const selectedItem = parseProductItems.find((item) => item.id === id);
   const index = cart.items.findIndex((item) => item.id === selectedItem.id);
@@ -13,7 +13,7 @@ export const removeHandler = (id, event) => {
   event.target.parentElement.children[2].innerText = 1;
 };
 
-////////// reduce item ///////////
+//////////////////// reduce item /////////////////////
 export const reduceHandler = (id, event) => {
   const selectedItem = parseProductItems.find((item) => item.id === id);
   const index = cart.items.findIndex((item) => item.id === selectedItem.id);
@@ -28,15 +28,19 @@ export const reduceHandler = (id, event) => {
   }
 };
 
-////////// increase //////////
+//////////////////// increase ////////////////////
 export const addHandler = (id, event) => {
   event.target.parentElement.children[0].style.display = "none";
   event.target.parentElement.children[1].style.display = "block";
   const selectedItem = parseProductItems.find((item) => item.id === id);
-  console.log(cart);
+
   const index = cart.items.findIndex((item) => item.id === selectedItem.id);
   cart.items[index].count += 1;
-  cart.totalPrice += cart.items[index].price;
+  cart.totalPrice = cart.items.reduce(
+    (acc, cur) => acc + cur.price * cur.count,
+    0
+  );
+  // cart.totalPrice += cart.items[index].price;
   localStorage.setItem("cart", JSON.stringify(cart));
   event.target.parentElement.children[2].innerText = cart.items[index].count;
 };
@@ -49,6 +53,7 @@ const insertToCart = (product) => {
     price: product.price,
     count: 1,
   };
+  console.log(cart.items);
   cart.items.push(cartItem);
   cart.totalPrice = cart.items.reduce(
     (acc, cur) => acc + cur.price * cur.count,

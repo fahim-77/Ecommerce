@@ -1,5 +1,7 @@
+import { getTokenCookie } from "../Utils/cookie.js";
 import { fetchURL } from "../Utils/httpRequest.js";
 import { setCookie } from "../Utils/cookie.js";
+import { loadUsers, users } from "./loadlocalstorage.js";
 const btnSignIn = document.querySelector(".btn-sign-in");
 const btnSignUp = document.querySelector(".btn-sign-up");
 const container = document.querySelector(".container");
@@ -9,29 +11,16 @@ const btnLogin = document.querySelector(".login");
 const btnCreate = document.querySelector(".create");
 
 const signInInput = document.querySelectorAll(".sign-in-input");
-console.log(signInInput);
 
 const createAccountInput = document.querySelectorAll(".create-account-input");
 
-const users = [];
-
-///////////////////////
+/////////////////////// fetch ////////////////////
 async function fetch() {
   const { error, data } = await fetchURL("users", "Get");
   if (!error) {
     data.map((item) => {
       item.password = btoa(item.password);
       users.push(item);
-    });
-  }
-}
-///////////////////////// storage //////////////////////
-function loadLocalStorage() {
-  const unParsedUsers = localStorage.getItem("users");
-  if (unParsedUsers) {
-    const parsedUsers = JSON.parse(unParsedUsers);
-    parsedUsers.map((user) => {
-      users.push(user);
     });
   }
 }
@@ -47,7 +36,7 @@ const singIn = () => {
   container.style.display = "flex";
 };
 
-/////////////////// event /////////////////////
+//////////////////// Check the name and password are correct //////////////////
 const checkHandler = async () => {
   let count = 0;
   const signInputUserName = signInInput[0].value.trim();
@@ -75,6 +64,8 @@ const checkHandler = async () => {
     alert("The email or password is incorrect ...");
   }
 };
+
+//////////////////// Checking the existence of the user and create account ////////////////////
 const createHandler = () => {
   const regexEmail = /^[a-zA-Z]+[\w_\.]+@[a-zA-Z]+\.([a-zA-Z]{2,3})$/;
   const regexPass = /^.{8,}/;
@@ -83,14 +74,11 @@ const createHandler = () => {
   const createInputEmail = createAccountInput[1].value.trim();
   const createInputPassword = createAccountInput[2].value.trim();
 
-  let count = 0;
-  users.forEach((user) => {
-    if (user.username === createInputName || user.email === createInputEmail) {
-      count++;
-      alert("A user with this name or email already exists ...");
-    }
-  });
-  if (count === 0) {
+  const index = users.findIndex(
+    (user) =>
+      user.username === createInputName || user.email === createInputEmail
+  );
+  if (index === -1) {
     if (createInputName !== "") {
       if (regexEmail.test(createInputEmail)) {
         if (regexPass.test(createInputPassword)) {
@@ -130,14 +118,25 @@ const createHandler = () => {
     } else {
       alert("The Username cannot be empty ...");
     }
+  } else {
+    alert("A user with this name or email already exists ...");
   }
 };
 
+/////////////////// event /////////////////////
 window.addEventListener("load", async () => {
   await fetch();
-  loadLocalStorage();
+  loadUsers();
   btnSignUp.addEventListener("click", createAccount);
   btnSignIn.addEventListener("click", singIn);
   btnLogin.addEventListener("click", checkHandler);
   btnCreate.addEventListener("click", createHandler);
 });
+
+/////////////////// validation /////////////////////
+const init = () => {
+  const token = getTokenCookie();
+  if (token) location.assign("../index.html");
+};
+
+window.addEventListener("DOMContentLoaded", init);

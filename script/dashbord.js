@@ -1,6 +1,6 @@
 import { valid } from "./Validation.js";
 import { loadDiscount, discountCode } from "./loadlocalstorage.js";
-const users = [];
+import { users, loadUsers } from "./loadlocalstorage.js";
 
 const table = document.querySelector(".discount");
 table.style.display = "none";
@@ -10,16 +10,7 @@ const listItem = document.querySelectorAll("li");
 let click = 0;
 let click2 = 0;
 
-function loadLocalStorage() {
-  const unParsedUsers = localStorage.getItem("users");
-  if (unParsedUsers) {
-    const parsedUsers = JSON.parse(unParsedUsers);
-    parsedUsers.map((user) => {
-      users.push(user);
-    });
-  }
-}
-
+/////////////////// show users ///////////////////
 const showHandler = (event) => {
   click++;
   if (click === 1) {
@@ -42,16 +33,22 @@ const showHandler = (event) => {
   }
 };
 
-const showCode = () => {
+//////////////////// show discount code ///////////////////
+const showDiscountCode = () => {
   click2++;
   if (click2 === 1) {
     table.style.display = "block";
     const tBody = document.createElement("tbody");
     tBody.classList.add("tbody-discount");
+
     discountCode.map((item) => {
       const tRow = document.createElement("tr");
+
+      ///// code /////
       const tDataCode = document.createElement("td");
       tDataCode.innerText = item.code;
+
+      ///// percent /////
       const tDataPercent = document.createElement("td");
       tDataPercent.innerText = item.percent;
 
@@ -68,11 +65,13 @@ const showCode = () => {
   }
 };
 
+/////////////////// event ////////////////////
 window.addEventListener("load", async () => {
-  loadLocalStorage();
+  loadUsers();
   loadDiscount();
   listItem[0].addEventListener("click", showHandler);
-  listItem[1].addEventListener("click", showCode);
+  listItem[1].addEventListener("click", showDiscountCode);
 });
 
+//////////////////// validation ///////////////////
 window.addEventListener("DOMContentLoaded", valid);

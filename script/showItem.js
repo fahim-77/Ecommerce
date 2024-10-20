@@ -4,7 +4,6 @@ import {
   reduceHandler,
   removeHandler,
 } from "./basketOperaion.js";
-
 import { parseProductItems } from "./script.js";
 
 const container = document.querySelector(".container");
