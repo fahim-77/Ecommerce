@@ -9,7 +9,7 @@ const removeHandler = (event, id) => {
   const selectedItem = cart.items.find((item) => item.id === id);
   const index = cart.items.findIndex((item) => item.id === selectedItem.id);
   event.target.parentElement.parentElement.style.display = "none";
-  cart.totalPrice -= cart.items[index].count * cart.items[index].price;
+  cart.totalPrice -= cart.items[index].price;
   cart.items.pop(cart.items[index]);
   localStorage.setItem("cart", JSON.stringify(cart));
   event.target.parentElement.children[2].innerText = 1;
@@ -120,7 +120,9 @@ function show() {
     ////////// total price //////////
     const tDataTotalPrice = document.createElement("td");
     tRow.appendChild(tDataTotalPrice);
-    tDataTotalPrice.innerHTML = cart.items[i].price * cart.items[i].count;
+    tDataTotalPrice.innerHTML = Number(
+      cart.items[i].price * cart.items[i].count
+    ).toFixed(2);
   }
   totalPrice.innerText = Number(cart.totalPrice).toFixed(2);
 }

@@ -66,3 +66,12 @@ export function loadUsers() {
     });
   }
 }
+
+/////////////////////// load username from local storage ///////////////////
+export function loadUserName() {
+  const unParsedUserName = localStorage.getItem("username");
+  if (unParsedUserName) {
+    const parsedUserName = JSON.parse(unParsedUserName);
+    cart.username = parsedUserName;
+  }
+}

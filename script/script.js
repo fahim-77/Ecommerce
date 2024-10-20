@@ -10,6 +10,7 @@ import {
   checkAllCart,
   loadCart,
   allCarts,
+  loadUserName,
 } from "./loadlocalstorage.js";
 
 ////////// search word //////////
@@ -69,6 +70,7 @@ window.addEventListener("load", async () => {
   await fetch();
   show();
   first();
+  loadUserName();
   ///// search word /////
   searchWord.addEventListener("keyup", searchWordHandler);
 
