@@ -17,11 +17,10 @@ export function checkAllCart() {
         cart.username = element.username;
       } else {
         cart.username = parsedUserName;
-        cart.items = [];
-        cart.totalPrice = 0;
       }
     });
   }
+  localStorage.setItem("firstEntry", JSON.stringify(1));
 }
 
 //////////////////// load cart from local storage ////////////////////

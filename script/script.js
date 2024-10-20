@@ -46,17 +46,29 @@ const signOutHandler = () => {
   }
   localStorage.setItem("allCarts", JSON.stringify(allCarts));
   localStorage.removeItem("cart");
+  localStorage.removeItem("username");
+  localStorage.removeItem("firstEntry");
   alert("You are logged out ...");
   setCookie("token", token, "path=/", "expires=Thu, 01 Jan 1970 00:00:00 UTC");
   window.location.assign("../pages/login.html");
 };
 
+function first() {
+  const unParsed = localStorage.getItem("firstEntry");
+  if (unParsed) {
+    const parsed = JSON.parse(unParsed);
+    loadCart();
+  } else {
+    checkAllCart();
+    alert(`welcome ${cart.username}`);
+  }
+}
+
 //////////////////// event ////////////////////
 window.addEventListener("load", async () => {
   await fetch();
   show();
-  checkAllCart();
-  loadCart();
+  first();
   ///// search word /////
   searchWord.addEventListener("keyup", searchWordHandler);
 

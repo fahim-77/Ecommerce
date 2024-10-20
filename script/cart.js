@@ -1,5 +1,5 @@
 import { valid } from "./Validation.js";
-import { cart, loadCart } from "./loadlocalstorage.js";
+import { cart, checkAllCart, loadCart } from "./loadlocalstorage.js";
 
 const tBody = document.querySelector("tbody");
 const totalPrice = document.querySelector(".total-price");
@@ -126,6 +126,7 @@ function show() {
 }
 
 window.addEventListener("load", () => {
+  checkAllCart();
   loadCart();
   show();
 });

@@ -36,11 +36,8 @@ export const addHandler = (id, event) => {
 
   const index = cart.items.findIndex((item) => item.id === selectedItem.id);
   cart.items[index].count += 1;
-  cart.totalPrice = cart.items.reduce(
-    (acc, cur) => acc + cur.price * cur.count,
-    0
-  );
-  // cart.totalPrice += cart.items[index].price;
+  cart.totalPrice += cart.items[index].price;
+
   localStorage.setItem("cart", JSON.stringify(cart));
   event.target.parentElement.children[2].innerText = cart.items[index].count;
 };
