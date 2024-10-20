@@ -3,6 +3,7 @@ import {
   discountCode,
   loadCart,
   cart,
+  checkAllCart,
 } from "./loadlocalstorage.js";
 import { valid } from "./Validation.js";
 
@@ -15,6 +16,9 @@ const btnApply = document.querySelector(".apply");
 const input = document.querySelector(".code");
 
 const show = () => {
+  if (cart.totalPrice === 0) {
+    checkAllCart();
+  }
   totalPrice.innerText = Number(cart.totalPrice).toFixed(2);
 };
 
