@@ -23,5 +23,6 @@ body {
 main {
   width: 1110px;
   font-size: 2rem;
+  margin-top: 2rem;
   text-align: justify;
 }

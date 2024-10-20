@@ -18,10 +18,15 @@ const createAccountInput = document.querySelectorAll(".create-account-input");
 async function fetch() {
   const { error, data } = await fetchURL("users", "Get");
   if (!error) {
-    data.map((item) => {
-      item.password = btoa(item.password);
-      users.push(item);
-    });
+    const unparsed = localStorage.getItem("firstFetchUser");
+    if (!unparsed) {
+      localStorage.setItem("firstFetchUser", JSON.stringify("first"));
+      data.map((item) => {
+        item.password = btoa(item.password);
+        users.push(item);
+        localStorage.setItem("users", JSON.stringify(users));
+      });
+    }
   }
 }
 
@@ -61,7 +66,7 @@ const checkHandler = async () => {
       alert("Sorry, you do not have permission to enter the store ...");
     }
   } else {
-    alert("The email or password is incorrect ...");
+    alert("The username or password is incorrect ...");
   }
 };
 
@@ -96,6 +101,9 @@ const createHandler = () => {
               password: btoa(createInputPassword),
               role,
             };
+            /////////// Remove duplicate values //////////
+            users.filter((user, index) => users.indexOf(user) === index);
+            /////////////////////////////////////////////
             users.push(user);
             localStorage.setItem("users", JSON.stringify(users));
             container2.style.display = "none";
@@ -125,8 +133,8 @@ const createHandler = () => {
 
 /////////////////// event /////////////////////
 window.addEventListener("load", async () => {
-  await fetch();
   loadUsers();
+  await fetch();
   btnSignUp.addEventListener("click", createAccount);
   btnSignIn.addEventListener("click", singIn);
   btnLogin.addEventListener("click", checkHandler);
