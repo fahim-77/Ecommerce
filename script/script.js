@@ -1,33 +1,29 @@
 import { searchWordHandler } from "./searchWord.js";
-
 import { searchPriceEnter, searchPriceHandler } from "./searchPrice.js";
-
 import { filters, filterHandler } from "./filter.js";
-
 import { fetchURL } from "../Utils/httpRequest.js";
 import { show } from "./showItem.js";
 import { setCookie, getTokenCookie } from "../Utils/cookie.js";
 import {
   cart,
-  loadAll,
   loadAllCart,
+  checkAllCart,
   loadCart,
   allCarts,
+  checkAllCart,
 } from "./loadlocalstorage.js";
 
-///// search word /////
+////////// search word //////////
 const searchWord = document.querySelector("#search-word");
 
-///// search price /////
+////////// search price //////////
 const buttonSearch = document.querySelector(".search-button");
 const searchPrice = document.querySelector("#search-price");
 
-///////// sign out /////////
+////////////////// sign out //////////////////
 const signOut = document.querySelector(".fa-sign-out");
 
-////////////////////////////////////////////////////////
-
-////////// fetch /////////
+/////////////////// fetch //////////////////
 export const parseProductItems = [];
 
 async function fetch() {
@@ -37,42 +33,11 @@ async function fetch() {
   }
 }
 
-// function check(array, cart) {
-//   if (array) {
-//     array.index
-//     array.inde((item) => {
-//       console.log(item);
-//       if (item.username === cart.username) {
-//         item.items = [...cart.items];
-//         item.totalPrice = cart.totalPrice;
-//       }
-//     });
-//   } else {
-//     allCarts.push(cart);
-//   }
-// }
-////////// get from storage //////////
-// function loadLocalStorage() {
-//   const unParsedUsers = localStorage.getItem("username");
-//   if (unParsedUsers) {
-//     const userName = JSON.parse(unParsedUsers);
-//     cart.userName = unParsedUsers;
-//     alert(`Welcome ${userName} !!!`);
-//     localStorage.removeItem("username");
-//   }
-//   const unParsedCart = localStorage.getItem("cart");
-//   if (unParsedCart) {
-//     const parsed = JSON.parse(unParsedCart);
-//     cart.items = [...parsed.items];
-//     cart.totalPrice = parsed.totalPrice;
-//   }
-// }
-
 let token = null;
-////////// sign out /////////
+/////////////////// sign out //////////////////
 const signOutHandler = () => {
   loadCart();
-  loadAll();
+  loadAllCart();
   const index = allCarts.findIndex((item) => item.username === cart.username);
   if (index === -1) {
     allCarts.push(cart);
@@ -80,9 +45,6 @@ const signOutHandler = () => {
     allCarts[index].items = [...cart.items];
     allCarts[index].totalPrice = cart.totalPrice;
   }
-  console.log(index);
-  // check(allCarts, cart);
-  console.log(allCarts);
   localStorage.setItem("allCarts", JSON.stringify(allCarts));
   localStorage.removeItem("cart");
   alert("You are logged out ...");
@@ -90,11 +52,11 @@ const signOutHandler = () => {
   window.location.assign("../pages/login.html");
 };
 
-////////// event //////////
+//////////////////// event ////////////////////
 window.addEventListener("load", async () => {
   await fetch();
   show();
-  loadAllCart();
+  checkAllCart();
   ///// search word /////
   searchWord.addEventListener("keyup", searchWordHandler);
 
@@ -109,6 +71,7 @@ window.addEventListener("load", async () => {
   signOut.addEventListener("click", signOutHandler);
 });
 
+//////////////////// Validation ////////////////////
 const init = () => {
   token = getTokenCookie();
   if (!token) location.assign("../pages/login.html");
